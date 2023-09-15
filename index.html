@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>15 Sept Activity</title>
+    <style>
+        li {
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            border-right: 1px solid #ccc;
+            padding-right: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="card text-center">
+            <div class="row p-2 mx-2">
+                <div class="col-md-4 col-12">
+                    <div class="form-group d-flex align-items-center">
+                        <label for="new-item" class="col-form-label me-2">Item:</label>
+                        <input type="text" id="new-item" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="form-group d-flex align-items-center">
+                        <label for="new-price" class="col-form-label me-2">Price:</label>
+                        <input type="number" id="new-price" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 col-12">
+                    <button class="btn btn-primary w-100" id="add-item">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-5 col-12 user-info p-4">
+                <h3>User Information</h3>
+                <p class="fw-bold mb-4">Welcome!</p>
+                <div id="user-info"></div>
+            </div>
+
+            <div class="col-md-7 col-12 p-4">
+                <h3>Cart List</h3>
+                <p class="fw-bold mb-4">The items in your cart are the following:</p>
+                <div class="cart">
+                    <ul id="cart-list" class="mb-5"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        // Displaying User Info
+        const userInfo = {
+            name: "Precious Bronzal",
+            age: 23,
+            nationality: "Filipino",
+            hobbies: ["Singing", "Playing", "Programming"],
+            cart: ["Burger <b class='ms-5'>Price:</b> 250", "Footlong <b class='ms-5'>Price:</b> 200", "Fries <b class='ms-5'>Price:</b> 100"]
+        };
+
+        function displayUserInfo() {
+            const userInfoDiv = document.getElementById("user-info");
+            userInfoDiv.innerHTML =
+                `<p><b>Name:</b> ${userInfo.name}</p>
+                <p><b>Age:</b> ${userInfo.age}</p>
+                <p><b>Nationality:</b> ${userInfo.nationality}</p>
+                <p><b>Hobbies:</b> ${userInfo.hobbies.join(', ')}</p>`;
+        }
+        displayUserInfo();
+
+        // Adding New Item
+        function addItem() {
+            const newItemInput = document.getElementById("new-item");
+            const newItemPriceInput = document.getElementById("new-price");
+
+            const newItem = newItemInput.value.trim();
+            const newPrice = newItemPriceInput.value.trim();
+
+            if (newItem !== "" && newPrice !== "") {
+                userInfo.cart.push(`${newItem} <b class='ms-5'>Price:</b> ${newPrice}`);
+                newItemInput.value = "";
+                newItemPriceInput.value = "";
+                displayCartList();
+            }
+        }
+
+
+        // Add Item Button
+        const addItemButton = document.getElementById("add-item");
+        addItemButton.addEventListener("click", addItem);
+
+
+        // Displaying cart list
+        function displayCartList() {
+            const cartList = document.getElementById("cart-list");
+            cartList.innerHTML = "";
+
+            userInfo.cart.forEach((item, index) => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `<b>Item:</b> ${item} <button class="btn btn-danger ms-3" onclick="deleteItem(${index})"><small>Delete</small></button>`;
+                cartList.appendChild(listItem);
+            });
+        }
+        displayCartList();
+
+
+        // Deleting Item
+        function deleteItem(index) {
+            userInfo.cart.splice(index, 1);
+            displayCartList();
+        }
+    </script>
+
+</body>
+
+</html>
